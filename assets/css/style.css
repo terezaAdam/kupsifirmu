@@ -27,7 +27,7 @@
   --r:  4px;
   --tr: .2s ease;
   --mw: 1180px;
-  --nh: 92px;
+  --nh: 104px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -81,7 +81,7 @@ p:last-child { margin-bottom: 0; }
   width: 100%; max-width: var(--mw); margin: 0 auto; padding: 0 24px;
 }
 .nav__logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; }
-.nav__logo-img { height: 84px; width: auto; display: block; }
+.nav__logo-img { height: 96px; width: auto; display: block; }
 .nav__links { display: flex; align-items: center; gap: 2rem; }
 .nav__link {
   font-family: var(--font-h); font-size: .88rem; font-weight: 800;
