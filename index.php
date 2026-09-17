@@ -1,46 +1,8 @@
 <?php
-require_once __DIR__ . '/includes/data.php';
-$c = ksContent();
+$pageTitle = 'Kup si firmu – Hotové firmy, okamžité podnikání';
+$pageDesc  = 'Kupte si nově založenou ready-made společnost s.r.o. a fakturujte během několika hodin. Bez čekání, bez dluhů, plně splacený kapitál.';
+require __DIR__ . '/includes/header.php';
 ?>
-<!doctype html>
-<html lang="cs">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kup si firmu – Hotové firmy, okamžité podnikání</title>
-<meta name="description" content="Kupte si nově založenou ready-made společnost s.r.o. a fakturujte během několika hodin. Bez čekání, bez dluhů, plně splacený kapitál.">
-<link rel="icon" href="assets/img/fav.kup.png">
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-
-
-<header class="nav" id="nav">
-  <div class="nav__inner">
-    <a href="#" class="nav__logo">
-      <img src="assets/img/logo.png" alt="Kup si firmu" class="nav__logo-img">
-    </a>
-    <nav class="nav__links">
-      <a href="#proc" class="nav__link">Proč my</a>
-      <a href="#postup" class="nav__link">Postup</a>
-      <a href="#zahrnuto" class="nav__link">Co je v ceně</a>
-      <a href="#faq" class="nav__link">FAQ</a>
-    </nav>
-    <div class="nav__cta">
-      <a href="#kontakt" class="btn btn--primary btn--sm"><?= htmlspecialchars($c['nav_cta']) ?></a>
-      <button class="nav__hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
-  <nav class="nav__mobile" id="nav-mobile">
-    <a href="#proc" class="nav__link">Proč my</a>
-    <a href="#postup" class="nav__link">Postup</a>
-    <a href="#zahrnuto" class="nav__link">Co je v ceně</a>
-    <a href="#faq" class="nav__link">FAQ</a>
-  </nav>
-</header>
-
 
 <section class="hero">
   <div class="container">
@@ -162,83 +124,4 @@ $c = ksContent();
   </div>
 </section>
 
-
-<footer class="footer">
-  <div class="container footer__inner">
-    <div class="footer__links">
-      <a href="#proc">Proč my</a>
-      <a href="#postup">Postup</a>
-      <a href="#zahrnuto">Co je v ceně</a>
-      <a href="#faq">FAQ</a>
-      <a href="#kontakt">Kontakt</a>
-    </div>
-    <p class="footer__copy">
-      &copy; <span id="year"></span> <?= htmlspecialchars($c['footer_copy']) ?> &middot;
-      <span class="footer__partner">Součást skupiny <a href="https://equitylegal.cz" target="_blank" rel="noopener">EQUITY LEGAL</a></span>
-    </p>
-  </div>
-</footer>
-
-<script>
-document.getElementById('year').textContent = new Date().getFullYear();
-
-
-const hamburger = document.getElementById('hamburger');
-const navMobile = document.getElementById('nav-mobile');
-hamburger.addEventListener('click', () => {
-  const open = navMobile.classList.toggle('open');
-  hamburger.setAttribute('aria-expanded', open);
-});
-navMobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navMobile.classList.remove('open')));
-
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 10);
-});
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: .15 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-document.querySelectorAll('.faq-item__q').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item = btn.closest('.faq-item');
-    const wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
-  });
-});
-
-const form = document.getElementById('contact-form');
-const msg = document.getElementById('form-msg');
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  if (form.botcheck.value) return;
-  const data = new FormData(form);
-  msg.className = 'form-msg show';
-  msg.textContent = 'Odesílám…';
-  try {
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { Accept: 'application/json' },
-      body: data,
-    });
-    const json = await res.json();
-    if (json.success) {
-      msg.className = 'form-msg show form-msg--ok';
-      msg.textContent = 'Děkujeme, ozveme se vám co nejdříve.';
-      form.reset();
-    } else {
-      msg.className = 'form-msg show form-msg--err';
-      msg.textContent = json.message || 'Něco se nepovedlo, zkuste to prosím znovu.';
-    }
-  } catch (err) {
-    msg.className = 'form-msg show form-msg--err';
-    msg.textContent = 'Formulář se nepodařilo odeslat. Napište nám prosím přímo na e-mail.';
-  }
-});
-</script>
-
-</body>
-</html>
+<?php require __DIR__ . '/includes/footer.php'; ?>

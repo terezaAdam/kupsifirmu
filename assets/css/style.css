@@ -225,6 +225,14 @@ p:last-child { margin-bottom: 0; }
 .footer__partner { color: rgba(255,255,255,.4); }
 .footer__partner a { color: rgba(255,255,255,.55); }
 
+.legal-content { max-width: 760px; margin: 2.5rem auto 0; }
+.legal-content h2 { font-size: 1.1rem; margin: 2.25rem 0 .85rem; }
+.legal-content h2:first-child { margin-top: 0; }
+.legal-content p { text-align: left; }
+.legal-content ul { list-style: disc; padding-left: 1.4rem; margin-bottom: 1rem; }
+.legal-content li { font-size: .95rem; color: var(--text-muted); margin-bottom: .5rem; }
+.legal-content__updated { color: var(--text-muted); font-size: .85rem; }
+
 @media (max-width: 900px) {
   .why-card { flex: 1 1 100%; }
   .steps { grid-template-columns: 1fr; }
