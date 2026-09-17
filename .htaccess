@@ -1,0 +1,50 @@
+Options -Indexes
+ServerSignature Off
+
+php_flag display_errors off
+php_flag expose_php off
+
+AddDefaultCharset UTF-8
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 6 months"
+  ExpiresByType image/png  "access plus 6 months"
+  ExpiresByType image/svg+xml "access plus 6 months"
+  ExpiresByType image/webp "access plus 6 months"
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'"
+  Header unset X-Powered-By
+</IfModule>
+
+<FilesMatch "^\.(?!well-known)|\.(env|json|log|md|lock)$">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^\.git/ - [F,L]
+  RewriteRule ^data/ - [F,L]
+  RewriteRule ^admin/includes/ - [F,L]
+  RewriteRule ^assets/uploads/.*\.(php|php\d|phtml|phar)$ - [F,L]
+  RewriteRule ^prihlaseni/?$ admin/login.php [L,QSA]
+</IfModule>
+<Files "*.log">
+  Require all denied
+</Files>
+
+DirectoryIndex index.php index.html

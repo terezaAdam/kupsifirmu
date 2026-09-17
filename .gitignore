@@ -1,1 +1,4 @@
 .DS_Store
+admin/includes/config.php
+data/.login_attempts.json
+data/.security.log

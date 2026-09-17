@@ -1,0 +1,77 @@
+<?php
+define('KS_DATA_DIR', __DIR__ . '/../data/');
+
+function ksReadJson(string $file): array {
+  $path = KS_DATA_DIR . basename($file);
+  if (!file_exists($path)) return [];
+  $data = json_decode(file_get_contents($path), true);
+  return is_array($data) ? $data : [];
+}
+
+function ksWriteJson(string $file, array $data): bool {
+  $path = KS_DATA_DIR . basename($file);
+  $tmp  = $path . '.tmp';
+  if (file_put_contents($tmp, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)) === false) {
+    return false;
+  }
+  return rename($tmp, $path);
+}
+
+function ksContent(): array {
+  static $defaults = [
+    'nav_cta' => 'Chci koupit firmu',
+
+    'hero_label' => 'Ready-made s.r.o.',
+    'hero_title' => 'Začněte podnikat <em>ještě dnes</em>. Bez čekání a zbytečné administrativy.',
+    'hero_desc'  => 'Kupte si nově založenou ready-made společnost a fakturujte během několika hodin. Nabízíme k prodeji čerstvě založené s.r.o. se všemi právními náležitostmi, plně splaceným základním kapitálem a nulovou historií. Žádné dluhy, žádné čekání na úřadech.',
+    'hero_cta_primary'   => 'Chci koupit firmu',
+    'hero_cta_secondary' => 'Proč si koupit firmu od nás',
+
+    'why_label' => 'Proč my',
+    'why_title' => 'Proč si koupit firmu od nás?',
+    'why_lead'  => 'Založení vlastní firmy od nuly může trvat týdny a vyžaduje obíhání úřadů. S námi získáváte hotovou společnost ihned k použití.',
+    'why_items' => [
+      ['title' => 'Okamžitý start',               'text' => 'Podnikat a podepisovat smlouvy můžete ihned po podpisu převodu.'],
+      ['title' => '100% garance bezdlužnosti',     'text' => 'Všechny naše firmy jsou nově založené, nemají žádnou historii ani závazky.'],
+      ['title' => 'Plně splacený kapitál',         'text' => 'Základní kapitál je již vyřízen a splacen, nemusíte deponovat vlastní hotovost v bance.'],
+      ['title' => 'Kompletní servis v ceně',       'text' => 'Připravíme veškerou dokumentaci a zajistíme zápis změn do obchodního rejstříku.'],
+      ['title' => 'Volné živnosti v ceně',         'text' => 'Společnosti mají vyřízené široké spektrum volných živností.'],
+    ],
+
+    'steps_label' => 'Jak to funguje',
+    'steps_title' => 'Jak převod probíhá?',
+    'steps_lead'  => 'Tři jednoduché kroky od výběru firmy až po první fakturu.',
+    'steps_items' => [
+      ['title' => 'Výběr firmy',        'text' => 'Zvolte si název společnosti z naší aktuální nabídky (případně název upravíme podle vašich představ).'],
+      ['title' => 'Podpis dokumentů',   'text' => 'Během jedné schůzky (nebo pohodlně na dálku přes ověřené podpisy) podepíšete převodní dokumentaci.'],
+      ['title' => 'Můžete podnikat!',   'text' => 'Ihned po podpisu získáváte společnost a můžete začít vystavovat faktury a uzavírat obchody.'],
+    ],
+
+    'included_label' => 'V ceně',
+    'included_title' => 'Co je zahrnuto v ceně ready-made s.r.o.?',
+    'included_items'  => [
+      'Nově založená společnost s.r.o. s nulovou historií',
+      '100% splacený základní kapitál',
+      'Vyřízené volné živnosti',
+      'Kompletní příprava převodní dokumentace',
+      'Zápis změn (nový jednatel, společník, sídlo) do obchodního rejstříku',
+      'Právní záruka čistého štítu',
+    ],
+
+    'faq_label' => 'Otázky a odpovědi',
+    'faq_title' => 'Často kladené otázky',
+    'faq_items' => [
+      ['q' => 'Je nákup ready-made firmy bezpečný?',        'a' => 'Ano, garantujeme smlouvou, že společnost nemá žádnou obchodní historii, nezávazek ani dluhy.'],
+      ['q' => 'Jak dlouho trvá převod?',                     'a' => 'Jednatelem se stáváte okamžitě v momentě tabulárního/notářského zápisu (resp. podpisu převodních smluv). Podnikat tedy můžete ještě týž den.'],
+      ['q' => 'Mohu změnit název nebo sídlo firmy?',         'a' => 'Určitě. Název, sídlo i předmět podnikání upravíme podle vašich potřeb přímo při převodu.'],
+    ],
+
+    'contact_label' => 'Poptávka',
+    'contact_title' => 'Připraveni k okamžitému startu?',
+    'contact_lead'  => 'Vyplňte krátký formulář a my se vám ozveme zpět s aktuální nabídkou volných společností.',
+
+    'footer_copy' => 'Kup si firmu. Všechna práva vyhrazena.',
+  ];
+  $saved = ksReadJson('content.json');
+  return array_merge($defaults, $saved);
+}
