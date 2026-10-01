@@ -6,7 +6,6 @@
       <a href="/#zahrnuto">Co je v ceně</a>
       <a href="/#faq">FAQ</a>
       <a href="/#kontakt">Kontakt</a>
-      <a href="/ochrana-osobnich-udaju.php">Ochrana osobních údajů</a>
     </div>
     <p class="footer__copy">
       &copy; <span id="year"></span> <?= htmlspecialchars($c['footer_copy']) ?> &middot;
