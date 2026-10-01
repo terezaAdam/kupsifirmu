@@ -25,6 +25,8 @@ AddDefaultCharset UTF-8
   Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
   Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
   Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.web3forms.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'"
+  # PHP-FPM adds this header outside the default table, so "always" is needed
+  Header always unset X-Powered-By
   Header unset X-Powered-By
 </IfModule>
 
@@ -36,6 +38,7 @@ AddDefaultCharset UTF-8
   RewriteEngine On
   RewriteRule ^\.git/ - [F,L]
   RewriteRule ^data/ - [F,L]
+  RewriteRule ^(includes/|router\.php$) - [F,L]
   RewriteRule ^admin/includes/ - [F,L]
   RewriteRule ^assets/uploads/.*\.(php|php\d|phtml|phar)$ - [F,L]
   RewriteRule ^prihlaseni/?$ admin/login.php [L,QSA]

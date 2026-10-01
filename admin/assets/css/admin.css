@@ -58,8 +58,8 @@ img { max-width: 100%; }
   text-decoration: none;
 }
 .sidebar__footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,.1); }
-.sidebar__footer a { font-size: .82rem; color: rgba(255,255,255,.45); }
-.sidebar__footer a:hover { color: #fff; text-decoration: none; }
+.sidebar__footer a, .sidebar__footer button { font-size: .82rem; color: rgba(255,255,255,.45); background: none; border: 0; padding: 0; font-family: inherit; cursor: pointer; }
+.sidebar__footer a:hover, .sidebar__footer button:hover { color: #fff; text-decoration: none; }
 
 .main-content {
   margin-left: var(--sidebar-w);

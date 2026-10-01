@@ -3,6 +3,7 @@ require_once __DIR__ . '/../../includes/data.php';
 
 ini_set('session.cookie_httponly', '1');
 ini_set('session.use_strict_mode', '1');
+ini_set('session.cookie_samesite', 'Lax'); // no session cookie on cross-site form posts
 if (!empty($_SERVER['HTTPS'])) {
   ini_set('session.cookie_secure', '1');
 }
