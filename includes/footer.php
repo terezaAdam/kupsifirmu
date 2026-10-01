@@ -47,10 +47,74 @@ document.querySelectorAll('.faq-item__q').forEach(btn => {
 
 const form = document.getElementById('contact-form');
 const msg = document.getElementById('form-msg');
+const alertBox = document.getElementById('form-alert');
+// Bots fill and submit instantly; a person needs at least a few seconds.
+const MIN_FILL_MS = 3000;
+const formLoadedAt = Date.now();
+
+const setFieldError = (field, message) => {
+  const row = field.closest('.form-row');
+  if (!row) return;
+  let err = row.querySelector('.form-error-msg');
+  if (message) {
+    row.classList.add('has-error');
+    field.setAttribute('aria-invalid', 'true');
+    if (!err) {
+      err = document.createElement('span');
+      err.className = 'form-error-msg';
+      err.id = field.id + '-error';
+      // The consent checkbox sits in a flex row with its label; put the message under the label text.
+      (field.type === 'checkbox' ? row.querySelector('label') : row).appendChild(err);
+      field.setAttribute('aria-describedby', err.id);
+    }
+    err.textContent = message;
+  } else {
+    row.classList.remove('has-error');
+    field.removeAttribute('aria-invalid');
+    err?.remove();
+    field.removeAttribute('aria-describedby');
+  }
+};
+
+const validateField = (field) => {
+  if (field.type === 'checkbox') return field.checked ? '' : 'Pro odeslání je potřeba potvrdit souhlas.';
+  if (field.required && !field.value.trim()) return 'Vyplňte prosím toto pole.';
+  if (field.type === 'email' && !field.validity.valid) return 'Zadejte prosím platný e-mail.';
+  return '';
+};
+
+const fieldsToCheck = form ? [...form.querySelectorAll('[required]')] : [];
+fieldsToCheck.forEach((field) => {
+  field.addEventListener(field.type === 'checkbox' ? 'change' : 'input', () => {
+    if (field.closest('.form-row')?.classList.contains('has-error')) setFieldError(field, validateField(field));
+  });
+});
+
 form?.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (form.botcheck.value) return;
+  alertBox.hidden = true;
+
+  let firstInvalid = null;
+  fieldsToCheck.forEach((field) => {
+    const error = validateField(field);
+    setFieldError(field, error);
+    if (error && !firstInvalid) firstInvalid = field;
+  });
+  if (firstInvalid) {
+    firstInvalid.focus();
+    return;
+  }
+
+  if (Date.now() - formLoadedAt < MIN_FILL_MS) {
+    alertBox.textContent = 'Formulář byl odeslán příliš rychle. Zkuste to prosím za pár sekund znovu.';
+    alertBox.hidden = false;
+    return;
+  }
+
   const data = new FormData(form);
+  const btn = form.querySelector('[type=submit]');
+  btn.disabled = true;
   msg.className = 'form-msg show';
   msg.textContent = 'Odesílám…';
   try {
@@ -72,6 +136,7 @@ form?.addEventListener('submit', async (e) => {
     msg.className = 'form-msg show form-msg--err';
     msg.textContent = 'Formulář se nepodařilo odeslat. Napište nám prosím přímo na e-mail.';
   }
+  btn.disabled = false;
 });
 </script>
 

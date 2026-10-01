@@ -31,10 +31,6 @@ function adminHeader(string $title, string $activeLink = ''): void {
         <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><line x1="4" y1="9" x2="20" y2="9"/></svg>
         Texty na webu
       </a>
-      <a href="/admin/media.php" class="sidebar__link <?= $activeLink === 'media' ? 'active' : '' ?>">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        Média
-      </a>
 
       <div class="sidebar__section">Web</div>
       <a href="/" target="_blank" class="sidebar__link">

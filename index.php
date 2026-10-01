@@ -98,27 +98,32 @@ require __DIR__ . '/includes/header.php';
     <p class="section-lead"><?= htmlspecialchars($c['contact_lead']) ?></p>
 
     <form class="contact-wrap" id="contact-form" novalidate>
+      <div class="form-alert" id="form-alert" role="alert" hidden></div>
       <input type="hidden" name="access_key" value="87132ecf-2d72-448e-948e-b0ce152ff0ee">
       <input type="hidden" name="subject" value="Nová poptávka z webu kupsifirmu.cz">
       <input type="hidden" name="from_name" value="Web KUP SI FIRMU">
       <input type="text" name="botcheck" id="botcheck" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
       <div class="form-row">
         <label for="name">Jméno a příjmení</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="name" required autocomplete="name">
       </div>
       <div class="form-row">
         <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" required autocomplete="email">
       </div>
       <div class="form-row">
-        <label for="phone">Telefon</label>
-        <input type="tel" id="phone" name="phone">
+        <label for="phone">Telefon <span class="form-optional">(nepovinné)</span></label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel">
       </div>
       <div class="form-row">
-        <label for="message">Poznámka / Představa o firmě</label>
+        <label for="message">Poznámka / Představa o firmě <span class="form-optional">(nepovinné)</span></label>
         <textarea id="message" name="message"></textarea>
       </div>
-      <button type="submit" class="btn btn--primary btn--block">Odeslat nezávaznou poptávku</button>
+      <div class="form-row form-row--consent">
+        <input type="checkbox" id="gdpr" required>
+        <label for="gdpr">Odesláním formuláře berete na vědomí zpracování osobních údajů za účelem vyřízení vaší poptávky. Podrobné informace o zpracování osobních údajů naleznete v <a href="https://equitylegal.cz/ochrana-osobnich-udaju" target="_blank" rel="noopener">Zásadách ochrany osobních údajů</a>.</label>
+      </div>
+      <button type="submit" class="btn btn--primary btn--block">Odeslat poptávku</button>
       <p class="form-msg" id="form-msg"></p>
     </form>
   </div>

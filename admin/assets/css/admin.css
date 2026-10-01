@@ -212,6 +212,17 @@ tr:hover td { background: #fafafa; }
   .form-grid, .form-grid--3 { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .sidebar { display: none; }
+  /* Sidebar becomes a horizontal bar above the page so navigation stays reachable. */
+  .admin-layout { flex-direction: column; }
+  .sidebar { position: static; width: auto; flex-direction: row; align-items: center; overflow-x: auto; }
+  .sidebar__brand { padding: .75rem 1rem; border-bottom: 0; flex-shrink: 0; }
+  .sidebar__brand-sub, .sidebar__section, .sidebar__footer { display: none; }
+  .sidebar__nav { display: flex; padding: 0; }
+  .sidebar__link { padding: .9rem .75rem; border-left: 0; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .sidebar__link svg { display: none; }
+  .sidebar__link[target="_blank"] { display: none; } /* the topbar already has a "Web" button */
+  .sidebar__link:hover, .sidebar__link.active { border-bottom-color: var(--burgundy); }
   .main-content { margin-left: 0; }
+  .topbar { padding: .75rem 1rem; }
+  .page { padding: 1rem; }
 }

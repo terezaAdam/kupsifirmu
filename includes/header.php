@@ -37,5 +37,6 @@ $c = ksContent();
     <a href="/#postup" class="nav__link">Postup</a>
     <a href="/#zahrnuto" class="nav__link">Co je v ceně</a>
     <a href="/#faq" class="nav__link">FAQ</a>
+    <a href="/#kontakt" class="btn btn--primary"><?= htmlspecialchars($c['nav_cta']) ?></a>
   </nav>
 </header>

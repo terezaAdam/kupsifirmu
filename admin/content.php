@@ -21,7 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
   $faq = [];
   foreach ((array)($_POST['faq_item_q'] ?? []) as $i => $q) {
-    $faq[] = ['q' => trim($q), 'a' => trim($_POST['faq_item_a'][$i] ?? '')];
+    $item = ['q' => trim($q), 'a' => trim($_POST['faq_item_a'][$i] ?? '')];
+    if ($item['q'] === '' && $item['a'] === '') continue;
+    $faq[] = $item;
   }
   $included = array_values(array_filter(array_map('trim', explode("\n", str_replace("\r", '', $_POST['included_items'] ?? '')))));
 
@@ -197,18 +199,38 @@ adminHeader('Texty na webu', 'content');
         <input type="text" id="faq_title" name="faq_title" value="<?= htmlspecialchars($c['faq_title']) ?>">
       </div>
     </div>
-    <?php foreach ($c['faq_items'] as $i => $item): ?>
-      <div style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.5rem;">
+    <div id="faq-list">
+      <?php foreach ($c['faq_items'] as $i => $item): ?>
+        <div class="faq-row" style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.5rem;">
+          <div class="form-group">
+            <label>Otázka <span class="faq-num"><?= $i + 1 ?></span></label>
+            <input type="text" name="faq_item_q[]" value="<?= htmlspecialchars($item['q']) ?>">
+          </div>
+          <div class="form-group">
+            <label>Odpověď <span class="faq-num"><?= $i + 1 ?></span></label>
+            <textarea name="faq_item_a[]" rows="2"><?= htmlspecialchars($item['a']) ?></textarea>
+          </div>
+          <button type="button" class="btn btn--danger btn--sm" data-faq-remove>Smazat otázku</button>
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <template id="faq-template">
+      <div class="faq-row" style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.5rem;">
         <div class="form-group">
-          <label>Otázka <?= $i + 1 ?></label>
-          <input type="text" name="faq_item_q[]" value="<?= htmlspecialchars($item['q']) ?>">
+          <label>Otázka <span class="faq-num"></span></label>
+          <input type="text" name="faq_item_q[]">
         </div>
         <div class="form-group">
-          <label>Odpověď <?= $i + 1 ?></label>
-          <textarea name="faq_item_a[]" rows="2"><?= htmlspecialchars($item['a']) ?></textarea>
+          <label>Odpověď <span class="faq-num"></span></label>
+          <textarea name="faq_item_a[]" rows="2"></textarea>
         </div>
+        <button type="button" class="btn btn--danger btn--sm" data-faq-remove>Smazat otázku</button>
       </div>
-    <?php endforeach; ?>
+    </template>
+    <div style="border-top:1px solid var(--border);padding-top:1rem;margin-top:1rem;">
+      <button type="button" class="btn btn--outline" id="faq-add">+ Přidat otázku</button>
+      <p class="form-hint">Změny se projeví na webu až po kliknutí na „Uložit a publikovat“.</p>
+    </div>
   </div>
 
   <div class="card">
@@ -235,5 +257,40 @@ adminHeader('Texty na webu', 'content');
 
   <button type="submit" class="btn btn--primary">Uložit a publikovat</button>
 </form>
+
+<script>
+(function () {
+  var list = document.getElementById('faq-list');
+  var tpl = document.getElementById('faq-template');
+
+  function renumber() {
+    list.querySelectorAll('.faq-row').forEach(function (row, i) {
+      row.querySelectorAll('.faq-num').forEach(function (el) { el.textContent = i + 1; });
+    });
+  }
+
+  document.getElementById('faq-add').addEventListener('click', function () {
+    list.appendChild(tpl.content.cloneNode(true));
+    renumber();
+    list.lastElementChild.querySelector('input').focus();
+  });
+
+  list.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-faq-remove]');
+    if (!btn) return;
+    if (!btn.dataset.armed) {
+      btn.dataset.armed = '1';
+      btn.textContent = 'Opravdu smazat? Klikněte znovu';
+      setTimeout(function () {
+        delete btn.dataset.armed;
+        btn.textContent = 'Smazat otázku';
+      }, 4000);
+      return;
+    }
+    btn.closest('.faq-row').remove();
+    renumber();
+  });
+})();
+</script>
 
 <?php adminFooter(); ?>
