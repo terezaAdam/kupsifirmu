@@ -1,9 +1,6 @@
 Options -Indexes
 ServerSignature Off
 
-php_flag display_errors off
-php_flag expose_php off
-
 AddDefaultCharset UTF-8
 
 <IfModule mod_deflate.c>
